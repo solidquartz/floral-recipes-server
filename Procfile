@@ -1,1 +1,1 @@
-web: ts-node-esm app.ts
+web: NODE_ENV=production ts-node-esm app.ts

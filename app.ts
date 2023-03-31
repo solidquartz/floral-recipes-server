@@ -15,6 +15,8 @@ import { registerFlowers } from "./routes/flowersRoutes";
 import { registerProjects } from "./routes/projectsRoutes";
 import { registerUsers } from "./routes/usersRoutes";
 
+console.log('Environment', process.env.NODE_ENV);
+
 const run = async () => {
   try {
     await ormDb.initialize();
