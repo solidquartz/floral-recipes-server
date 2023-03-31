@@ -39,7 +39,7 @@ const run = async () => {
     cors({
       origin:
         process.env.NODE_ENV === "production"
-          ? "floral-recipes.vercel.app"
+          ? "https://floral-recipes.vercel.app"
           : "http://localhost:5173",
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true,
