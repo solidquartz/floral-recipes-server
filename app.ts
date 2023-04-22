@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 import express from "express";
+import * as Sentry from "@sentry/node";
 import { db } from "./configs/db.config";
 import { ormDb } from "./configs/db-orm";
 import cookieParser from "cookie-parser";
@@ -15,17 +16,44 @@ import { registerFlowers } from "./routes/flowersRoutes";
 import { registerProjects } from "./routes/projectsRoutes";
 import { registerUsers } from "./routes/usersRoutes";
 
-console.log('Environment', process.env.NODE_ENV);
+const initSentry = (app: express.Express) => {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [
+      // enable HTTP calls tracing
+      new Sentry.Integrations.Http({ tracing: true }),
+      // enable Express.js middleware tracing
+      new Sentry.Integrations.Express({ app }),
+      // Automatically instrument Node.js libraries and frameworks
+      ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
+    ],
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  });
+
+  app.use(Sentry.Handlers.requestHandler());
+
+  if (process.env.SENTRY_TRACE === "true") {
+    app.use(Sentry.Handlers.tracingHandler());
+  }
+
+  app.use(Sentry.Handlers.errorHandler());
+};
 
 const run = async () => {
+  const app = express();
+
+  initSentry(app);
+
   try {
     await ormDb.initialize();
     await db.connect();
   } catch (err) {
     console.error(err);
   }
-
-  const app = express();
 
   const { PORT } = process.env;
 
