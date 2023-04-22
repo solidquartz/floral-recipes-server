@@ -32,7 +32,7 @@ export const registerUsers = () => {
       }
 
       if (!user) {
-        res.status(401).send();
+        return next(new Error('User not found'))
       }
 
       req.logIn(user, { session: false }, (loginErr) => {
