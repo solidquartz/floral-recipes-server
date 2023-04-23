@@ -49,8 +49,8 @@ export const registerFlowers = () => {
     console.log(req.body);
     try {
       const results = await db.query(
-        "INSERT INTO flowers (flower_name, stem_price, rounded_up) VALUES ($1, $2, $3) returning *",
-        [req.body.flower_name, req.body.stem_price, req.body.rounded_up]
+        "INSERT INTO flowers (flower_name, stem_price) VALUES ($1, $2) returning *",
+        [req.body.flower_name, req.body.stem_price]
       );
       res.status(201).json(results.rows[0]);
     } catch (err) {
@@ -63,11 +63,10 @@ export const registerFlowers = () => {
   app.patch("/:id", async (req, res) => {
     try {
       const results = await db.query(
-        "UPDATE flowers SET flower_name = $1, stem_price = $2, rounded_up = $3 WHERE id = $4 returning *",
+        "UPDATE flowers SET flower_name = $1, stem_price = $2 WHERE id = $3 returning *",
         [
           req.body.flower_name,
           req.body.stem_price,
-          req.body.rounded_up,
           req.params.id,
         ]
       );

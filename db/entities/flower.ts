@@ -8,9 +8,9 @@ export class Flower extends BaseEntity {
   @Column({ nullable: true })
   flower_name: string;
 
-  @Column({ type: 'numeric', nullable: false })
+  @Column({ type: "numeric", nullable: false })
   stem_price: number;
 
-  @Column()
+  @Column({ nullable: true })
   rounded_up: number;
 }

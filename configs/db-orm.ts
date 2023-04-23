@@ -1,5 +1,5 @@
 import { DataSource, DataSourceOptions } from "typeorm";
-import { ArrangedFlower, Arrangement, Flower, Project, Users } from '../db/entities';
+import { ArrangedFlower, Arrangement, Flower, Project, Users, FlowerOrders } from '../db/entities';
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT } = process.env;
 
@@ -10,7 +10,7 @@ const dataSourceOptions: DataSourceOptions = process.env.NODE_ENV === 'productio
       rejectUnauthorized: false
     },
     type: "postgres",
-    entities: [ArrangedFlower, Arrangement, Flower, Project, Users],
+    entities: [ArrangedFlower, Arrangement, Flower, Project, Users, FlowerOrders],
     logging: true,
     synchronize: true
   }
@@ -21,7 +21,7 @@ const dataSourceOptions: DataSourceOptions = process.env.NODE_ENV === 'productio
     password: DB_PASSWORD,
     database: DB_DATABASE,
     type: "postgres",
-    entities: [ArrangedFlower, Arrangement, Flower, Project, Users],
+    entities: [ArrangedFlower, Arrangement, Flower, Project, Users, FlowerOrders],
     logging: true,
     synchronize: true
   };

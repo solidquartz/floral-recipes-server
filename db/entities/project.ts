@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Arrangement } from "./arrangement";
-import { FlowerOrder } from "./order";
+import { FlowerOrders } from "./flower_orders";
 
 @Entity("projects")
 export class Project extends BaseEntity {
@@ -34,6 +34,6 @@ export class Project extends BaseEntity {
   @OneToMany(() => Arrangement, (a) => a.project)
   arrangements: Arrangement[];
 
-  @OneToMany(() => FlowerOrder, o => o.project)
-  flower_orders: FlowerOrder[];
+  @OneToMany(() => FlowerOrders, o => o.project)
+  flower_orders: FlowerOrders[];
 }

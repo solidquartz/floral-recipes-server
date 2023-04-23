@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "t
 import { Project } from "./project";
 
 @Entity("flower_orders")
-export class FlowerOrder extends BaseEntity {
+export class FlowerOrders extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
