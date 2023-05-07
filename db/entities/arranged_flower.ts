@@ -18,7 +18,7 @@ export class ArrangedFlower extends BaseEntity {
   @Column()
   flower_id: number;
 
-  @Column()
+  @Column({ type: "numeric" })
   stem_quantity: number;
 
   @ManyToOne(() => Arrangement, (a) => a.arranged_flowers)
