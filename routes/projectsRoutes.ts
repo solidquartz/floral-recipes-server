@@ -5,6 +5,7 @@ import {
   Arrangement,
   Project as ProjectEntity,
 } from "../db/entities";
+import { ormDb } from "../configs/db-orm";
 
 type DbArrangedFlower = {
   id: number;
@@ -118,6 +119,10 @@ export const registerProjects = () => {
         [req.params.id]
       );
 
+      if (!projectResult.rows) {
+        return res.status(404);
+      }
+
       const project = new Project(
         projectResult.rows[0],
         arrangementsResult.rows,
@@ -133,10 +138,16 @@ export const registerProjects = () => {
   //gets all projects with all data
   app.get("/", async (req, res) => {
     try {
-      const results = await db.query(
-        "SELECT * FROM projects ORDER BY last_updated"
-      );
-      res.status(200).json(results.rows);
+      let query = ormDb.manager.createQueryBuilder(ProjectEntity, "project")
+        .orderBy("project.last_updated")
+
+      // if (req.params.showArchived) {
+      //   query = query.withDeleted()
+      // }
+
+      const results = await query.getMany();
+
+      res.status(200).json(results);
     } catch (err) {
       console.log(err);
     }
@@ -295,6 +306,23 @@ export const registerProjects = () => {
       }
     }
   );
+
+  //delete a project
+  app.delete("/:id", async (req, res) => {
+    try {
+      await ormDb.manager.createQueryBuilder(ProjectEntity, "project")
+        .softDelete()
+        .where("id = :id", { id: req.params.id })
+        .execute();
+
+      res.status(204).json({
+        status: "success",
+        id: Number(req.params.id),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
   return app;
 };

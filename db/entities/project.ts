@@ -4,6 +4,7 @@ import {
   Column,
   OneToMany,
   PrimaryGeneratedColumn,
+  DeleteDateColumn
 } from "typeorm";
 import { Arrangement } from "./arrangement";
 import { FlowerOrders } from "./flower_orders";
@@ -36,4 +37,7 @@ export class Project extends BaseEntity {
 
   @OneToMany(() => FlowerOrders, o => o.project)
   flower_orders: FlowerOrders[];
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
